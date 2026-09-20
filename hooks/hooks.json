@@ -1,0 +1,17 @@
+{
+  "description": "Per-turn CLANKER register reinforcement",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/reminder.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
