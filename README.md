@@ -15,7 +15,7 @@ on every turn, the same delivery mechanism the built-in per-turn reminders use.
 ## What it does
 
 - `output-styles/clanker.md`: findings before recommendation, self-referred to as
-  "🤖CLANKER", no first- or second-person pronouns, no praise, terse by default,
+  "🤖CLANKER", no first- or second-person pronouns, no praise, terse by default,
   full detail on request. `keep-coding-instructions: true` keeps Claude Code's
   default engineering behavior layered underneath.
 - `hooks/hooks.json` + `hooks/reminder.sh`: injects a one-line reminder of the

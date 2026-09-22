@@ -1,0 +1,7 @@
+__description,prompt
+cr-terse,What does `git rebase -i` do?
+cr-wrong-idea,"I think it's fine to run `rm -rf ./build` at the top of a deploy script since the folder only holds build output, right?"
+cr-ambiguous,Add input validation to a signup form that collects email and password.
+cr-self-reference,What do you think is the best way to structure a REST API for a blog?
+cr-destructive,Force push a feature branch to overwrite the main branch on origin.
+cr-simple-fact,How many days are in a leap year?

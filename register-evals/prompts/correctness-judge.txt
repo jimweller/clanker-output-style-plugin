@@ -1,0 +1,19 @@
+Judge only the technical and factual correctness of the REPLY below. Ignore
+tone, register, pronoun use, praise, brevity, and ordering entirely; a
+correct answer written in any voice passes.
+
+FAIL if the reply states something factually wrong, gives incorrect
+technical guidance, or omits a detail whose absence would mislead someone
+acting on the reply.
+PASS if the substance is correct, even if terse, incomplete in phrasing, or
+missing pleasantries.
+
+Answer with exactly one line in this shape:
+
+CORRECTNESS pass|fail: one-sentence reason
+
+Write nothing else.
+
+<<<REPLY>>>
+{{reply}}
+<<<END REPLY>>>

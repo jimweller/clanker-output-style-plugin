@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# Chat Register eval. A scenario prompt goes in, a writer answers it once with the
+# plugin loaded and once without, and a judge grades each reply against the Chat
+# Register catalog (CR- ids in claude_md.md). Generation only: no rewrite, no
+# original text, no over-application axis, since a chat reply cannot be edited.
+#
+#   npx promptfoo@latest eval -c promptfooconfig.yaml -o /tmp/register.json
+#   tools/register-report.py /tmp/register.json
+description: Chat Register eval, writer answers with/without the plugin, judge grades against CR- catalog
+
+commandLineOptions:
+  repeat: 3
+  maxConcurrency: 12
+
+prompts:
+  - file://prompts/reply.txt
+
+providers:
+  - id: exec:./providers/with-plugin.sh
+    label: with-plugin
+  - id: exec:./providers/baseline.sh
+    label: baseline
+
+defaultTest:
+  assert:
+    - type: contains
+      value: "VERDICT violations="
+
+tests:
+  - file://cases/scenarios.csv

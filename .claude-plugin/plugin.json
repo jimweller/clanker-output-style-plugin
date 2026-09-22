@@ -1,6 +1,6 @@
 {
   "name": "clanker-output-style-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Output style plus per-turn hook reinforcing a terse, non-deferential CLANKER register",
   "author": {
     "name": "Jim Weller"
