@@ -1,14 +1,12 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
-# Clanker Register eval. A scenario prompt goes in, a writer answers it once with the
-# plugin loaded and once without, and graders/judge.js scores each reply three times
-# against the CR- catalog and three times for correctness, from one writer call.
+# Rejudges stored replies. tools/rejudge-tests.py turns a prior -o JSON into
+# corpus/rejudge/tests.json, one providerOutput test per reply, so the judge grades
+# text a writer already produced and the echo provider is never called.
 #
-#   npx promptfoo@0.123.1 eval --no-cache -o /tmp/register.json
-#   tools/register-report.py /tmp/register.json
-#
-# Headline numbers use --repeat 3. Knobs: EVAL_MODEL, JUDGE_MODEL, JUDGE_EFFORT,
-# JUDGE_PASSES, JUDGE_MAX_PROCS, JUDGE_RETRIES, JUDGE_TIMEOUT_MS, JUDGE_CATALOG.
-description: Clanker Register eval, writer with and without the plugin, JSON judge in promptfoo
+#   tools/rejudge-tests.py /tmp/register.json
+#   npx promptfoo@0.123.1 eval -c promptfooconfig.rejudge.yaml --no-cache -o /tmp/rejudge.json
+#   tools/judge-agreement.py across /tmp/rejudge-a.json /tmp/rejudge-b.json
+description: Clanker Register rejudge of stored replies
 
 commandLineOptions:
   repeat: 1
@@ -19,18 +17,8 @@ prompts:
   - file://prompts/reply.txt
 
 providers:
-  - id: file://providers/writer.py
-    label: with-plugin
-    config:
-      arm: with
-      workers: 12
-      timeout: 600000
-  - id: file://providers/writer.py
-    label: baseline
-    config:
-      arm: baseline
-      workers: 12
-      timeout: 600000
+  - id: echo
+    label: rejudge
 
 defaultTest:
   assert:
@@ -62,4 +50,4 @@ derivedMetrics:
   - name: correct_maj_rate
     value: cor_pass_maj / cor_judged
 
-tests: file://cases/scenarios.csv
+tests: file://corpus/rejudge/tests.json
