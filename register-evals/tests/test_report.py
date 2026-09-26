@@ -162,19 +162,17 @@ class GradedTest(unittest.TestCase):
         self.assertIn("PROVIDER_ERROR", out)
 
 
-class LegacyTest(unittest.TestCase):
-    def legacy_row(self, label, findings, correct="pass"):
-        body = "\n".join(f"FINDING | {r} | span | why" for r in findings)
-        text = f"<<<REPLY>>>\nreply\n<<<FINDINGS>>>\n{body}\nVERDICT violations={len(findings)}\n<<<CORRECTNESS>>>\nCORRECTNESS {correct}: ok\n"
-        return {"provider": {"label": label}, "success": True, "response": {"output": text, "cached": False},
-                "gradingResult": {"pass": True, "namedScores": {}, "componentResults": []}}
-
-    def test_legacy_rows_are_read_as_one_pass_each(self):
-        rows = [self.legacy_row("with-plugin", []), self.legacy_row("with-plugin", ["CR-a"]), self.legacy_row("baseline", ["CR-a", "CR-b"], "fail")]
-        code, out = run({"results": {"results": rows, "prompts": []}})
-        self.assertEqual(code, 0, out)
-        self.assertRegex(out, r"with-plugin .*adapter=legacy.*clean_maj_rate=0\.500")
-        self.assertRegex(out, r"baseline .*correct_maj_rate=0\.000")
+class UngradedTest(unittest.TestCase):
+    def test_a_row_with_no_judge_result_exits_one(self):
+        text = "<<<REPLY>>>\nreply\n<<<FINDINGS>>>\nFINDING | CR-a | span | why\nVERDICT violations=1\n<<<CORRECTNESS>>>\nCORRECTNESS pass: ok\n"
+        rows = [graded_row("with-plugin", 3),
+                {"provider": {"label": "with-plugin"}, "success": True, "response": {"output": text, "cached": False},
+                 "gradingResult": {"pass": True, "namedScores": {}, "componentResults": []}}]
+        code, out = run(doc(rows))
+        self.assertEqual(code, 1, out)
+        self.assertIn("UNGRADED row 1 (with-plugin)", out)
+        self.assertNotIn("adapter=", out)
+        self.assertRegex(out, r"with-plugin .*judged=1 ")
 
 
 if __name__ == "__main__":
