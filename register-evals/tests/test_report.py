@@ -109,7 +109,8 @@ class GradedTest(unittest.TestCase):
         self.assertRegex(out, r"with-plugin .*clean_maj_rate=0\.500")
         self.assertRegex(out, r"baseline .*clean_maj_rate=0\.500")
         self.assertRegex(out, r"baseline .*correct_maj_rate=0\.500")
-        self.assertRegex(out, r"with-plugin .*style_marker=2/2")
+        self.assertRegex(out, r"with-plugin .*contract_loaded=2/2")
+        self.assertNotIn("style_marker", out)
 
     def test_majority_findings_by_default(self):
         code, out = run(doc(self.rows()))

@@ -147,7 +147,7 @@ def main(argv=None):
         meta = resp.get("metadata") or {}
         if "arm" in meta:
             col["meta_rows"] += 1
-            for k in ("style_marker", "self_name_anywhere", "contract_loaded"):
+            for k in ("self_name_anywhere", "contract_loaded"):
                 col["meta"][k] += int(bool(meta.get(k)))
 
     for label, col in cols.items():
@@ -163,7 +163,7 @@ def main(argv=None):
                     problems.append(f"MISMATCH {label} {name}: recomputed {value:.6f}, promptfoo derived {got}")
         adapter = "+".join(sorted(col["adapters"])) or "none"
         fmt = " ".join(f"{k}={'n/a' if v is None else f'{v:.3f}'}" for k, v in rates.items())
-        metas = " ".join(f"{k}={col['meta'][k]}/{col['meta_rows']}" for k in ("style_marker", "self_name_anywhere", "contract_loaded")) if col["meta_rows"] else ""
+        metas = " ".join(f"{k}={col['meta'][k]}/{col['meta_rows']}" for k in ("self_name_anywhere", "contract_loaded")) if col["meta_rows"] else ""
         print(f"== {label} ==  adapter={adapter} rows={col['rows']} judged={s['reg_judged']} {fmt} {metas} "
               f"writer_cost=${col['writer_cost']:.2f} judge_cost=${col['judge_cost']:.2f}")
         print(f"  findings ({args.findings}):")
