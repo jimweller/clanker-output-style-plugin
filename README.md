@@ -1,32 +1,39 @@
-# clanker-output-style-plugin
+# clanker-chat
 
-Claude Code plugin: a `Clanker` output style plus a `UserPromptSubmit` hook that
-reinforces its register every turn.
+Claude Code plugin delivering the Clanker Register: findings before
+recommendation, "🤖CLANKER" self-reference, no first- or second-person
+pronouns, no praise of the operator.
 
-## Why
+## Overview
 
-A custom output style has no per-turn reminder field in its frontmatter (`name`,
-`description`, `keep-coding-instructions`, `force-for-plugin` are the full set) so
-its instructions can fade over a long session, unlike built-in styles (`Concise`,
-`Proactive`), which Claude Code re-injects every turn. This plugin closes that gap
-with a `UserPromptSubmit` hook that returns `hookSpecificOutput.additionalContext`
-on every turn, the same delivery mechanism the built-in per-turn reminders use.
+A custom output style carries no per-turn reminder field in its frontmatter, so
+its instructions can fade over a long session the way built-in styles do not.
+This plugin delivers the register three ways: a `SessionStart` hook points a
+new session at the rules file, a `UserPromptSubmit` hook reinjects a one-line
+reminder every turn, and the `Clanker` output style sets the terminal-turn
+voice.
 
-## What it does
-
-- `output-styles/clanker.md`: findings before recommendation, self-referred to as
-  "🤖CLANKER", no first- or second-person pronouns, no praise, terse by default,
-  full detail on request. `keep-coding-instructions: true` keeps Claude Code's
-  default engineering behavior layered underneath.
-- `hooks/hooks.json` + `hooks/reminder.sh`: injects a one-line reminder of the
-  register on every `UserPromptSubmit`, regardless of which output style is active.
-
-## Install
+## Usage
 
 ```bash
 claude plugin marketplace add https://github.com/jimweller/claude-marketplace.git
-claude plugin install clanker-output-style-plugin
+claude plugin install clanker-chat
 ```
 
-Then select the style for a session with `/output-style Clanker` or `/config`, or
-set `"outputStyle": "Clanker"` in a settings file.
+Select the style with `/config`, or set `"outputStyle": "Clanker"` in a
+settings file.
+
+## Architecture
+
+| Path                                    | Role                                                                                                                             |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `rules/clanker-register.md`             | The register, wrapped in `<clanker-register>`; every rule carries a `CR-` id                                                     |
+| `hooks/hooks.json`, `hooks/inject.sh`   | `SessionStart` hook, points the session at the rules file                                                                        |
+| `hooks/hooks.json`, `hooks/reminder.sh` | `UserPromptSubmit` hook, reinjects a one-line reminder every turn                                                                |
+| `output-styles/clanker.md`              | The `Clanker` output style; `keep-coding-instructions: true` keeps Claude Code's default engineering behavior layered underneath |
+
+## Testing
+
+`register-evals/` grades a writer's reply against the register with and
+without the plugin loaded. `evals/smoke-test/` checks the style against a
+conversational-tone case.

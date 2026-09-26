@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Summarizes a Chat Register eval run: clean rate, per-rule violation counts,
+"""Summarizes a Clanker Register eval run: clean rate, per-rule violation counts,
 and correctness pass rate, broken out per provider (with-plugin vs baseline).
 
 The provider script prints one artifact per run:

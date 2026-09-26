@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Pulls the Chat Register section out of the global instruction file.
+"""Pulls the Clanker Register section out of the clanker-chat plugin's rules file.
 
 `<clanker-register>` wraps the section body, the same device `<prose-contract>`
 uses and for the same reason: cutting on the tag rather than on the
-`## Chat Register` heading string means a renamed heading no longer breaks
+`## Clanker Register` heading string means a renamed heading no longer breaks
 extraction. Each rule line opens with a `CR-` id, the same convention `PC-`
 ids use for the prose contract, added for this eval so a judge and a report
 can name a rule exactly instead of by free text.
 
-Source of truth is the dotfiles repo, a parent of this one. Override with
-CONTRACT_FILE when running from somewhere else.
+Source of truth is rules/clanker-register.md, a sibling of this register-evals/
+directory inside the clanker-chat plugin. Override with CONTRACT_FILE when
+running from somewhere else.
 
 Usage
     tools/extract-register-catalog.py [--ids] [OUT_FILE]
@@ -21,7 +22,7 @@ import re
 import sys
 
 EVAL_ROOT = pathlib.Path(__file__).resolve().parent.parent
-DEFAULT_CONTRACT = EVAL_ROOT.parents[2] / "configs" / "claude-code" / "claude_md.md"
+DEFAULT_CONTRACT = EVAL_ROOT.parent / "rules" / "clanker-register.md"
 BLOCK = re.compile(r"<clanker-register>(.*?)</clanker-register>", re.DOTALL)
 RULE_ID = re.compile(r"^- `(CR-[a-z0-9-]+)`", re.MULTILINE)
 

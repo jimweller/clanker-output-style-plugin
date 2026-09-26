@@ -1,10 +1,10 @@
 {
-  "name": "clanker-output-style-plugin",
-  "version": "0.2.0",
-  "description": "Output style plus per-turn hook reinforcing a terse, non-deferential CLANKER register",
+  "name": "clanker-chat",
+  "version": "0.3.0",
+  "description": "Clanker Register rules, output style, SessionStart injection, and per-turn reinforcement hook",
   "author": {
     "name": "Jim Weller"
   },
-  "repository": "https://github.com/jimweller/clanker-output-style-plugin",
+  "repository": "https://github.com/jimweller/clanker-chat-plugin",
   "license": "MIT"
 }

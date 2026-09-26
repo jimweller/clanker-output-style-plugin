@@ -1,6 +1,16 @@
 {
-  "description": "Per-turn CLANKER register reinforcement",
+  "description": "Clanker Register: SessionStart contract pointer plus per-turn reinforcement",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/inject.sh SessionStart"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
